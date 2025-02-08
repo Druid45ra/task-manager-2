@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
-import { createTask } from '../services/api';
 
 const TaskForm = ({ setTasks }) => {
   const [title, setTitle] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await createTask({ title });
-    setTasks(prev => [...prev, data]);
+    const response = await fetch('/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title }),
+    });
+    const data = await response.json();
+    setTasks((prev) => [...prev, data]);
     setTitle('');
   };
 

@@ -6,9 +6,11 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    mongoose.set("strictQuery", false); // Adaugă această linie pentru a evita avertismentul strictQuery
     console.log("MongoDB Connected...");
   } catch (error) {
     console.error(`Error: ${error.message}`);
+    console.error(error.stack);
     process.exit(1);
   }
 };

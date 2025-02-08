@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
 
-function TaskList() {
-  const [tasks, setTasks] = useState([]);
-
+const TaskList = ({ tasks, setTasks }) => {
   useEffect(() => {
-    axios.get('http://localhost:5000/api/tasks')
-      .then(response => {
-        setTasks(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching tasks:', error);
-      });
-  }, []);
+    const fetchTasks = async () => {
+      const response = await fetch('/api/tasks');
+      const data = await response.json();
+      setTasks(data);
+    };
+
+    fetchTasks();
+  }, [setTasks]);
 
   return (
     <div>
       <h2>Task List</h2>
       <ul>
         {tasks.map(task => (
-          <li key={task.id}>
+          <li key={task._id}>
             {task.title} - {task.completed ? 'Completed' : 'Pending'}
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
 
 export default TaskList;
