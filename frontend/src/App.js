@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 import Navbar from "./components/Navbar";
@@ -20,15 +20,18 @@ const App = () => {
   return (
     <Router>
       <Navbar />
-      <Switch>
-        <Route exact path="/">
-          <div>
-            <h1>Task Manager</h1>
-            <TaskForm setTasks={setTasks} />
-            <TaskList tasks={tasks} setTasks={setTasks} />
-          </div>
-        </Route>
-      </Switch>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div>
+              <h1>Task Manager</h1>
+              <TaskForm setTasks={setTasks} />
+              <TaskList tasks={tasks} setTasks={setTasks} />
+            </div>
+          }
+        />
+      </Routes>
     </Router>
   );
 };
