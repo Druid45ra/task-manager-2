@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getTasks, deleteTask } from '../services/api';
 
-const TaskList = ({ tasks, setTasks }) => {
+const TaskList = () => {
+  const [tasks, setTasks] = useState([]);
+
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch('/api/tasks');
-      const data = await response.json();
-      setTasks(data);
+      const tasks = await getTasks();
+      setTasks(tasks);
     };
-
     fetchTasks();
-  }, [setTasks]);
+  }, []);
+
+  const handleDelete = async (id) => {
+    await deleteTask(id);
+    setTasks(tasks.filter(task => task._id !== id));
+  };
 
   return (
     <div>
@@ -17,7 +23,8 @@ const TaskList = ({ tasks, setTasks }) => {
       <ul>
         {tasks.map(task => (
           <li key={task._id}>
-            {task.title} - {task.completed ? 'Completed' : 'Pending'}
+            {task.name}
+            <button onClick={() => handleDelete(task._id)}>Delete</button>
           </li>
         ))}
       </ul>

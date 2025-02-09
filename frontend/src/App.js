@@ -1,26 +1,23 @@
-import React, { useState, useEffect } from "react";
-import TaskList from "./components/TaskList";
-import TaskForm from "./components/TaskForm";
-import { getTasks } from "./services/api";
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
 
 const App = () => {
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const data = await getTasks();
-      setTasks(data);
-    };
-
-    fetchTasks();
-  }, []);
-
   return (
-    <div>
-      <h1>Task Manager</h1>
-      <TaskForm setTasks={setTasks} />
-      <TaskList tasks={tasks} setTasks={setTasks} />
-    </div>
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route path="/tasks">
+          <TaskForm />
+          <TaskList />
+        </Route>
+        <Route path="/">
+          <h1>Welcome to Task Manager</h1>
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
